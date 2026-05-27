@@ -1,15 +1,20 @@
-import { Inter } from 'next/font/google';
-import './globals.css';
-import { AuthProvider } from '@/context/AuthContext';
+import { Inter, Playfair_Display } from "next/font/google";
+import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif",
 });
 
 export const metadata = {
-  title: 'HAQMS - Hospital Appointment & Queue Management',
-  description: 'Deliberately imperfect queue and scheduling application for assessment purposes.',
+  title: "HAQMS - Elegant Wellness & Health",
+  description: "Modern Health Clinic Queue and Scheduling application.",
 };
 
 export default function RootLayout({ children }) {
@@ -17,12 +22,16 @@ export default function RootLayout({ children }) {
     <html lang="en" className="h-full">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
       </head>
-      <body className={`${inter.variable} font-sans min-h-screen gradient-bg`}>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+      <body
+        className={`${inter.variable} ${playfair.variable} font-sans min-h-screen bg-[#FDF8F0] text-[#3D4532]`}
+      >
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
