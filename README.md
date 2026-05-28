@@ -1,19 +1,56 @@
-# HAQMS
 
-Simple, secure hospital booking & queue app with a clean UI.
 
-- Fast booking and queue tokens for receptionists
-- Simple doctor dashboard and patient history view
-- Secure auth and role-based access
+# 🏥 HAQMS
 
-Built with Next.js (frontend), Node.js + Express (backend), Prisma + PostgreSQL.
+> **H**ospital **A**ppointment & **Q**ueue **M**anagement **S**ystem
+![HAQMS Banner](./banner.png)
 
-Quick start:
+Welcome to **HAQMS**! A simple, secure, and modern platform for hospital booking and queue management with a clean UI.
 
-1. Install: `chmod +x setup.sh && ./setup.sh`
-2. Start DB: `docker-compose up -d` (or use your Postgres)
-3. Seed & run: `npm run db:setup --prefix backend && npm run dev`
+🚀 **[Live Demo](https://haqms-stardust.vercel.app/)**
 
-Seeded test accounts are created by the seed script.
+---
 
-Contribute via issues or PRs. Thank you!
+## ✨ What It Does
+
+- 🎟️ **Fast Booking & Queues:** Seamless token generation for receptionists.
+- 👨‍⚕️ **Doctor Dashboard:** Simple interface to manage patients and view histories.
+- 🔐 **Secure & Reliable:** Role-based access control (RBAC) built-in.
+
+## 🛠️ Tech Stack & Deployment
+
+- 🎨 **Frontend:** Next.js — Deployed on **Vercel** 🔺
+- ⚙️ **Backend:** Node.js, Express, Prisma, PostgreSQL — Deployed on **Railway** 🚄
+
+## 🔧 Fixes & Updates
+
+We are constantly improving! Check out the details of what has been fixed and added:  
+👉 **[Read the FIXES.md file](./FIXES.md)**
+
+---
+
+## 💻 Getting Started (Local Development)
+
+Easily clone and set up the project locally using **Git**:
+
+```bash
+# Clone the repository
+git clone https://github.com/TechFigitablLabs/HAQMS.git
+cd HAQMS
+
+# Quick installation
+chmod +x setup.sh && ./setup.sh
+
+# Start Database
+docker-compose up -d
+
+# Setup DB & Run
+npm run db:setup --prefix backend
+npm run dev
+```
+
+_Note: Seeded test accounts are automatically created by the seed script._
+
+---
+
+Made with ❤️ for better healthcare management.
