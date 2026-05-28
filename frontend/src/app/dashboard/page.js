@@ -501,68 +501,122 @@ export default function Dashboard() {
                       message="No patient data matches your current search filters. Adjust your parameters or register a new profile."
                     />
                   ) : (
-                    <div className="overflow-x-auto rounded-xl border border-[#3D4532]/10 bg-white">
-                      <table className="min-w-[600px] w-full text-left text-sm">
-                        <thead className="bg-[#FDF8F0] text-[#3D4532]/60 uppercase text-[10px] font-extrabold tracking-widest">
-                          <tr>
-                            <th className="px-4 py-3">Name & Email</th>
-                            <th className="px-4 py-3">Contact</th>
-                            <th className="px-4 py-3">Demographics</th>
-                            <th className="px-4 py-3 text-right">Operations</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[#3D4532]/5">
-                          <AnimatePresence>
-                            {patients.map((p) => (
-                              <motion.tr
-                                key={p.id}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                className="hover:bg-[#FDF8F0]/50 transition-colors"
-                              >
-                                <td className="px-4 py-3">
-                                  <p className="font-bold text-[#3D4532] whitespace-nowrap">
+                    <>
+                      {/* MOBILE VIEW: Stacked Cards */}
+                      <div className="block md:hidden space-y-4">
+                        <AnimatePresence>
+                          {patients.map((p) => (
+                            <motion.div
+                              key={p.id}
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0 }}
+                              className="bg-white p-4 rounded-xl border border-[#3D4532]/10 shadow-sm space-y-3"
+                            >
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <p className="font-bold text-[#3D4532] text-lg">
                                     {p.name}
                                   </p>
-                                  <p className="text-xs text-[#3D4532]/50 whitespace-nowrap">
+                                  <p className="text-xs text-[#3D4532]/50">
                                     {p.email || "No email on file"}
                                   </p>
-                                </td>
-                                <td className="px-4 py-3 font-medium text-[#3D4532]/70 whitespace-nowrap">
-                                  {p.phoneNumber}
-                                </td>
-                                <td className="px-4 py-3 font-medium text-[#3D4532]/70 whitespace-nowrap">
-                                  {p.age}y / {p.gender}
-                                </td>
-                                <td className="px-4 py-3 text-right space-x-2 whitespace-nowrap">
-                                  <button
-                                    onClick={() =>
-                                      handleQueueCheckin(
-                                        p.id,
-                                        doctorsList[0]?.id,
-                                      )
-                                    }
-                                    className="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#D3F23A] text-[#3D4532] hover:scale-105 transition-transform"
-                                  >
-                                    Check In
-                                  </button>
-                                  <button
-                                    onClick={() => handleDeletePatient(p.id)}
-                                    className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors inline-flex align-middle"
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </button>
-                                </td>
-                              </motion.tr>
-                            ))}
-                          </AnimatePresence>
-                        </tbody>
-                      </table>
-                    </div>
+                                </div>
+                                <span className="px-2 py-1 bg-[#FDF8F0] text-[#3D4532]/60 text-[10px] font-black uppercase rounded">
+                                  {p.age}y / {p.gender.charAt(0)}
+                                </span>
+                              </div>
+                              <div className="text-sm font-medium text-[#3D4532]/70">
+                                📞 {p.phoneNumber}
+                              </div>
+                              <div className="pt-3 border-t border-[#3D4532]/5 flex gap-2">
+                                <button
+                                  onClick={() =>
+                                    handleQueueCheckin(p.id, doctorsList[0]?.id)
+                                  }
+                                  className="flex-1 py-2 text-xs font-bold rounded-lg bg-[#D3F23A] text-[#3D4532] active:scale-95 transition-transform"
+                                >
+                                  Check In
+                                </button>
+                                <button
+                                  onClick={() => handleDeletePatient(p.id)}
+                                  className="px-4 py-2 text-rose-500 bg-rose-50 active:bg-rose-100 rounded-lg transition-colors flex items-center justify-center"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </AnimatePresence>
+                      </div>
+
+                      {/* DESKTOP VIEW: Table */}
+                      <div className="hidden md:block overflow-x-auto rounded-xl border border-[#3D4532]/10 bg-white">
+                        <table className="min-w-[600px] w-full text-left text-sm">
+                          <thead className="bg-[#FDF8F0] text-[#3D4532]/60 uppercase text-[10px] font-extrabold tracking-widest">
+                            <tr>
+                              <th className="px-4 py-3">Name & Email</th>
+                              <th className="px-4 py-3">Contact</th>
+                              <th className="px-4 py-3">Demographics</th>
+                              <th className="px-4 py-3 text-right">
+                                Operations
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-[#3D4532]/5">
+                            <AnimatePresence>
+                              {patients.map((p) => (
+                                <motion.tr
+                                  key={p.id}
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: 1 }}
+                                  exit={{ opacity: 0 }}
+                                  className="hover:bg-[#FDF8F0]/50 transition-colors"
+                                >
+                                  <td className="px-4 py-3">
+                                    <p className="font-bold text-[#3D4532] whitespace-nowrap">
+                                      {p.name}
+                                    </p>
+                                    <p className="text-xs text-[#3D4532]/50 whitespace-nowrap">
+                                      {p.email || "No email on file"}
+                                    </p>
+                                  </td>
+                                  <td className="px-4 py-3 font-medium text-[#3D4532]/70 whitespace-nowrap">
+                                    {p.phoneNumber}
+                                  </td>
+                                  <td className="px-4 py-3 font-medium text-[#3D4532]/70 whitespace-nowrap">
+                                    {p.age}y / {p.gender}
+                                  </td>
+                                  <td className="px-4 py-3 text-right space-x-2 whitespace-nowrap">
+                                    <button
+                                      onClick={() =>
+                                        handleQueueCheckin(
+                                          p.id,
+                                          doctorsList[0]?.id,
+                                        )
+                                      }
+                                      className="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#D3F23A] text-[#3D4532] hover:scale-105 transition-transform"
+                                    >
+                                      Check In
+                                    </button>
+                                    <button
+                                      onClick={() => handleDeletePatient(p.id)}
+                                      className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors inline-flex align-middle"
+                                    >
+                                      <Trash2 className="h-4 w-4" />
+                                    </button>
+                                  </td>
+                                </motion.tr>
+                              ))}
+                            </AnimatePresence>
+                          </tbody>
+                        </table>
+                      </div>
+                    </>
                   )}
                 </motion.div>
 
+                {/* REGISTRATION FORM (Right Column) - Keep unchanged */}
                 <motion.div
                   variants={itemVariants}
                   className="bg-white/60 backdrop-blur p-4 sm:p-6 rounded-[2rem] shadow-xl shadow-[#3D4532]/5 border border-[#3D4532]/10 h-fit"
@@ -597,7 +651,6 @@ export default function Dashboard() {
                         className="w-full px-4 py-3 bg-white border border-[#3D4532]/10 rounded-xl focus:ring-2 focus:ring-[#D3F23A] outline-none placeholder:text-[#3D4532]/30 font-medium"
                       />
                     </div>
-                    {/* Responsive Grid for Form Elements */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block mb-1.5">Age</label>
@@ -648,7 +701,7 @@ export default function Dashboard() {
             </motion.div>
           )}
 
-          {/* TAB: BOOKING */}
+          {/* TAB: BOOKING (No Tables, untouched) */}
           {activeTab === "book" && (
             <motion.div
               key="book"
@@ -666,7 +719,6 @@ export default function Dashboard() {
                   <CalendarDays className="h-5 w-5 sm:h-6 sm:w-6 text-[#FF5E29]" />
                   Schedule Appointment
                 </h3>
-
                 {bookingMessage && (
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -676,7 +728,6 @@ export default function Dashboard() {
                     {bookingMessage}
                   </motion.div>
                 )}
-
                 <form
                   onSubmit={handleBookAppointment}
                   className="space-y-4 text-sm font-bold text-[#3D4532]"
@@ -788,7 +839,7 @@ export default function Dashboard() {
                       const d = document.getElementById("w-doc").value;
                       if (p && d) handleQueueCheckin(p, d);
                     }}
-                    className="w-full py-3.5 bg-[#D3F23A] text-[#3D4532] font-extrabold rounded-xl mt-4"
+                    className="w-full py-3.5 bg-[#D3F23A] text-[#3D4532] font-extrabold rounded-xl mt-4 active:scale-95 transition-transform"
                   >
                     Execute Immediate Token
                   </motion.button>
@@ -819,84 +870,153 @@ export default function Dashboard() {
                   message="You have no appointments booked for today. Enjoy the downtime or check the active queue for walk-ins."
                 />
               ) : (
-                <div className="overflow-x-auto rounded-xl border border-[#3D4532]/10 bg-white">
-                  <table className="min-w-[600px] w-full text-left text-sm">
-                    <thead className="bg-[#FDF8F0] text-[#3D4532]/60 uppercase text-[10px] font-extrabold tracking-widest">
-                      <tr>
-                        <th className="px-4 py-3">Time</th>
-                        <th className="px-4 py-3">Patient</th>
-                        <th className="px-4 py-3">Status</th>
-                        <th className="px-4 py-3 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[#3D4532]/5">
-                      <AnimatePresence>
-                        {doctorAppointments.map((app) => (
-                          <motion.tr
-                            key={app.id}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="hover:bg-[#FDF8F0]/50 transition-colors"
-                          >
-                            <td className="px-4 py-3 font-mono font-bold text-[#3D4532] whitespace-nowrap">
-                              {new Date(app.appointmentDate).toLocaleTimeString(
-                                [],
-                                { hour: "2-digit", minute: "2-digit" },
-                              )}
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap">
-                              <p className="font-bold text-[#3D4532]">
+                <>
+                  {/* MOBILE VIEW: Stacked Cards */}
+                  <div className="block md:hidden space-y-4">
+                    <AnimatePresence>
+                      {doctorAppointments.map((app) => (
+                        <motion.div
+                          key={app.id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0 }}
+                          className="bg-white p-4 rounded-xl border border-[#3D4532]/10 shadow-sm flex flex-col gap-3"
+                        >
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <p className="font-bold text-[#3D4532] text-lg">
                                 {app.patient?.name || "Unknown"}
                               </p>
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap">
-                              <span
-                                className={`inline-flex px-2 py-1 rounded text-[10px] font-black tracking-widest uppercase ${app.status === "COMPLETED" ? "bg-[#D3F23A] text-[#3D4532]" : "bg-[#FDF8F0] text-[#3D4532]/60"}`}
+                              <p className="font-mono text-sm font-bold text-[#3D4532]/60">
+                                {new Date(
+                                  app.appointmentDate,
+                                ).toLocaleTimeString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}
+                              </p>
+                            </div>
+                            <span
+                              className={`px-2 py-1 rounded text-[10px] font-black tracking-widest uppercase ${app.status === "COMPLETED" ? "bg-[#D3F23A] text-[#3D4532]" : "bg-[#FDF8F0] text-[#3D4532]/60"}`}
+                            >
+                              {app.status}
+                            </span>
+                          </div>
+
+                          {app.status === "PENDING" && (
+                            <div className="pt-3 border-t border-[#3D4532]/5 flex gap-2">
+                              <button
+                                onClick={() => {
+                                  const matchedDoc = doctorsList.find(
+                                    (d) => d.userId === user.id,
+                                  );
+                                  handleQueueCheckin(
+                                    app.patientId,
+                                    matchedDoc.id,
+                                    app.id,
+                                  );
+                                }}
+                                className="flex-1 py-2.5 text-xs font-bold rounded-lg bg-[#D3F23A] text-[#3D4532] active:scale-95 transition-transform"
                               >
-                                {app.status}
-                              </span>
-                            </td>
-                            <td className="px-4 py-3 text-right space-x-2 whitespace-nowrap">
-                              {app.status === "PENDING" && (
-                                <>
-                                  <button
-                                    onClick={() => {
-                                      const matchedDoc = doctorsList.find(
-                                        (d) => d.userId === user.id,
-                                      );
-                                      handleQueueCheckin(
-                                        app.patientId,
-                                        matchedDoc.id,
-                                        app.id,
-                                      );
-                                    }}
-                                    className="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#D3F23A] text-[#3D4532] hover:scale-105 transition-transform"
-                                  >
-                                    Check In
-                                  </button>
-                                  <button
-                                    onClick={() =>
-                                      handleCompleteAppointment(app.id)
-                                    }
-                                    className="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#3D4532] text-white hover:scale-105 transition-transform"
-                                  >
-                                    Complete
-                                  </button>
-                                </>
-                              )}
-                            </td>
-                          </motion.tr>
-                        ))}
-                      </AnimatePresence>
-                    </tbody>
-                  </table>
-                </div>
+                                Check In
+                              </button>
+                              <button
+                                onClick={() =>
+                                  handleCompleteAppointment(app.id)
+                                }
+                                className="flex-1 py-2.5 text-xs font-bold rounded-lg bg-[#3D4532] text-white active:scale-95 transition-transform"
+                              >
+                                Complete
+                              </button>
+                            </div>
+                          )}
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* DESKTOP VIEW: Table */}
+                  <div className="hidden md:block overflow-x-auto rounded-xl border border-[#3D4532]/10 bg-white">
+                    <table className="min-w-[600px] w-full text-left text-sm">
+                      <thead className="bg-[#FDF8F0] text-[#3D4532]/60 uppercase text-[10px] font-extrabold tracking-widest">
+                        <tr>
+                          <th className="px-4 py-3">Time</th>
+                          <th className="px-4 py-3">Patient</th>
+                          <th className="px-4 py-3">Status</th>
+                          <th className="px-4 py-3 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-[#3D4532]/5">
+                        <AnimatePresence>
+                          {doctorAppointments.map((app) => (
+                            <motion.tr
+                              key={app.id}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              className="hover:bg-[#FDF8F0]/50 transition-colors"
+                            >
+                              <td className="px-4 py-3 font-mono font-bold text-[#3D4532] whitespace-nowrap">
+                                {new Date(
+                                  app.appointmentDate,
+                                ).toLocaleTimeString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}
+                              </td>
+                              <td className="px-4 py-3 whitespace-nowrap">
+                                <p className="font-bold text-[#3D4532]">
+                                  {app.patient?.name || "Unknown"}
+                                </p>
+                              </td>
+                              <td className="px-4 py-3 whitespace-nowrap">
+                                <span
+                                  className={`inline-flex px-2 py-1 rounded text-[10px] font-black tracking-widest uppercase ${app.status === "COMPLETED" ? "bg-[#D3F23A] text-[#3D4532]" : "bg-[#FDF8F0] text-[#3D4532]/60"}`}
+                                >
+                                  {app.status}
+                                </span>
+                              </td>
+                              <td className="px-4 py-3 text-right space-x-2 whitespace-nowrap">
+                                {app.status === "PENDING" && (
+                                  <>
+                                    <button
+                                      onClick={() => {
+                                        const matchedDoc = doctorsList.find(
+                                          (d) => d.userId === user.id,
+                                        );
+                                        handleQueueCheckin(
+                                          app.patientId,
+                                          matchedDoc.id,
+                                          app.id,
+                                        );
+                                      }}
+                                      className="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#D3F23A] text-[#3D4532] hover:scale-105 transition-transform"
+                                    >
+                                      Check In
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleCompleteAppointment(app.id)
+                                      }
+                                      className="px-3 py-1.5 text-xs font-bold rounded-lg bg-[#3D4532] text-white hover:scale-105 transition-transform"
+                                    >
+                                      Complete
+                                    </button>
+                                  </>
+                                )}
+                              </td>
+                            </motion.tr>
+                          ))}
+                        </AnimatePresence>
+                      </tbody>
+                    </table>
+                  </div>
+                </>
               )}
             </motion.div>
           )}
 
-          {/* TAB: DOCTOR QUEUE */}
+          {/* TAB: DOCTOR QUEUE (Already uses cards, left mostly untouched) */}
           {activeTab === "queue" && (
             <motion.div
               key="queue"
@@ -951,7 +1071,7 @@ export default function Dashboard() {
                               onClick={() =>
                                 handleUpdateQueueStatus(t.id, "CALLING")
                               }
-                              className="flex-1 min-w-[100px] py-2.5 bg-[#D3F23A] text-[#3D4532] font-extrabold rounded-xl text-xs hover:scale-105 transition-transform shadow-sm"
+                              className="flex-1 min-w-[100px] py-3 bg-[#D3F23A] text-[#3D4532] font-extrabold rounded-xl text-xs active:scale-95 transition-transform shadow-sm"
                             >
                               Call Next
                             </button>
@@ -962,7 +1082,7 @@ export default function Dashboard() {
                                 onClick={() =>
                                   handleUpdateQueueStatus(t.id, "COMPLETED")
                                 }
-                                className="flex-1 min-w-[80px] py-2.5 bg-[#3D4532] text-white font-extrabold rounded-xl text-xs hover:scale-105 transition-transform shadow-sm"
+                                className="flex-1 min-w-[80px] py-3 bg-[#3D4532] text-white font-extrabold rounded-xl text-xs active:scale-95 transition-transform shadow-sm"
                               >
                                 Clear
                               </button>
@@ -970,7 +1090,7 @@ export default function Dashboard() {
                                 onClick={() =>
                                   handleUpdateQueueStatus(t.id, "SKIPPED")
                                 }
-                                className="flex-1 min-w-[80px] py-2.5 bg-rose-50 text-rose-600 font-extrabold rounded-xl text-xs hover:scale-105 transition-transform"
+                                className="flex-1 min-w-[80px] py-3 bg-rose-50 text-rose-600 font-extrabold rounded-xl text-xs active:scale-95 transition-transform"
                               >
                                 Skip
                               </button>
@@ -1009,7 +1129,7 @@ export default function Dashboard() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={generateSystemReport}
-                  className="w-full sm:w-auto px-6 py-3 bg-[#3D4532] text-white font-extrabold rounded-xl shadow-lg hover:bg-[#FF5E29] transition-colors whitespace-nowrap"
+                  className="w-full sm:w-auto px-6 py-3.5 bg-[#3D4532] text-white font-extrabold rounded-xl shadow-lg active:scale-95 md:hover:bg-[#FF5E29] transition-colors whitespace-nowrap"
                 >
                   {adminReportLoading ? "Processing..." : "Execute Audit"}
                 </motion.button>
@@ -1071,7 +1191,36 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="overflow-x-auto rounded-xl border border-[#3D4532]/10 bg-white">
+                  {/* MOBILE VIEW: Stacked Cards */}
+                  <div className="block md:hidden space-y-4">
+                    {adminReportData.data.map((item) => (
+                      <div
+                        key={item.id}
+                        className="bg-white p-4 rounded-xl border border-[#3D4532]/10 shadow-sm flex flex-col gap-3"
+                      >
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="font-bold text-[#3D4532] text-lg">
+                              {item.name}
+                            </p>
+                            <p className="text-xs font-bold text-[#FF5E29] uppercase tracking-wider">
+                              {item.specialization}
+                            </p>
+                          </div>
+                          <span className="font-black text-[#3D4532] text-lg">
+                            ${item.revenue}
+                          </span>
+                        </div>
+                        <div className="pt-2 border-t border-[#3D4532]/5 text-sm font-medium text-[#3D4532]/70">
+                          {item.completedAppointments} /{" "}
+                          {item.totalAppointments} Consults Completed
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* DESKTOP VIEW: Table */}
+                  <div className="hidden md:block overflow-x-auto rounded-xl border border-[#3D4532]/10 bg-white">
                     <table className="min-w-[600px] w-full text-left text-sm">
                       <thead className="bg-[#FDF8F0] text-[#3D4532]/60 uppercase text-[10px] font-extrabold tracking-widest">
                         <tr>
@@ -1113,7 +1262,7 @@ export default function Dashboard() {
             </motion.div>
           )}
 
-          {/* TAB: PHYSICIAN REGISTRY */}
+          {/* TAB: PHYSICIAN REGISTRY (Already uses cards, untouched) */}
           {activeTab === "physicians" && (
             <motion.div
               key="physicians"
@@ -1142,7 +1291,7 @@ export default function Dashboard() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   onClick={searchPhysiciansAdmin}
-                  className="w-full sm:w-auto px-6 py-3 bg-[#3D4532] text-white font-extrabold rounded-xl shadow-lg hover:bg-[#FF5E29] transition-colors"
+                  className="w-full sm:w-auto px-6 py-3 bg-[#3D4532] text-white font-extrabold rounded-xl shadow-lg active:scale-95 transition-colors"
                 >
                   Search
                 </motion.button>
